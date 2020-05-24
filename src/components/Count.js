@@ -5,12 +5,15 @@ import {
 } from 'native-base';
 
 class Count extends PureComponent {
+    constructor(props){
+        super(props);
+    }
 
     render() {
 
         return (
             <Content>
-                <Text>Words</Text>
+                <Text>{this.props.count} Words</Text>
             </Content>
         );
     }
