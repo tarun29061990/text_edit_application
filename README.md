@@ -35,7 +35,7 @@ Whole logic lies in src folder which is divided into main.js, components and sto
 
  1. Main.js - Mounts the components (textarea, wordcount and undo button)
  2. components - Contains seperate components for textarea, wordcount and undo.
- 3. storage - Contains logic for storing list of messages in a stack. I am using **AsyncStorage** for state management. I could have used redux but for a small application like this AsyncStorage is sufficient.
+ 3. storage - Contains logic for storing list of messages. I am using **AsyncStorage** for state management. I could have used redux but for a small application(like this one) AsyncStorage is sufficient.
  
 ### Who do I talk to? ###
 
