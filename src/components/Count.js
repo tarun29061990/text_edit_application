@@ -17,7 +17,7 @@ class Count extends PureComponent {
 
         return (
             <Content>
-                <Button full transparent><Text style={styles.text}>{this.props.count} Words</Text></Button>
+                <Text style={styles.text}>{this.props.count} Words</Text>
             </Content>
         );
     }
