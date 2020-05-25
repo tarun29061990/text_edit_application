@@ -7,6 +7,7 @@ class TextInput extends PureComponent {
 
     constructor(props){
         super(props);
+        this.saveState = props.saveState;
         this.state = {
             text: props.value,
             prevText: props.value
@@ -38,11 +39,11 @@ class TextInput extends PureComponent {
         );
     }
 
-    _saveState = () => {
+    _saveMessage = () => {
         
         if(this.state.text){
             if(this.state.text !== this.state.prevText){
-                this.props.saveState( this.state.text );
+                this.saveState( this.state.text );
                 this.setState({"prevText": this.state.text});
             }
         }
@@ -54,12 +55,12 @@ class TextInput extends PureComponent {
         return (
             <Content>
                 <Textarea 
-                rowSpan={5} 
+                rowSpan={7} 
                 bordered
                 value = { this.state.text }
                 placeholder="Enter some text here" 
                 onChangeText = { this._handleChange }
-                onBlur= { this._saveState }>
+                onBlur= { this._saveMessage }>
 
                 </Textarea>
             </Content>

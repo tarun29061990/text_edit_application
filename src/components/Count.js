@@ -1,7 +1,11 @@
 import React, {PureComponent} from 'react';
 import {
+    StyleSheet
+} from 'react-native';
+import {
     Content,
-    Text
+    Text,
+    Button
 } from 'native-base';
 
 class Count extends PureComponent {
@@ -13,10 +17,16 @@ class Count extends PureComponent {
 
         return (
             <Content>
-                <Text>{this.props.count} Words</Text>
+                <Button full transparent><Text style={styles.text}>{this.props.count} Words</Text></Button>
             </Content>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    text: {
+        fontSize: 20
+    }
+});
 
 export default Count;

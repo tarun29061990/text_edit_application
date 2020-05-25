@@ -10,7 +10,7 @@ class Undo extends PureComponent {
         super(props);
         this.updateData = props.updateData;
         this.state = {
-            data: [],
+            messages: [],
             show: false
         }
     }
@@ -30,7 +30,7 @@ class Undo extends PureComponent {
     componentDidMount() {
         if(this.props.value && this.props.value.length){
             this.setState({
-                data: this.props.value,
+                messages: this.props.value,
                 show: true
             });
         }
@@ -39,7 +39,7 @@ class Undo extends PureComponent {
     componentDidUpdate(prevProps){
         if(!this._arraysMatch(prevProps.value, this.props.value)){
             this.setState({
-                data: this.props.value,
+                messages: this.props.value,
                 show: true
             });
         }
@@ -47,11 +47,11 @@ class Undo extends PureComponent {
 
     _undo = () => {
         
-        const val = this.state.data;
-        if(val.length){
-            val.pop();
-            this.updateData(val);
-            if(!val.length){
+        let messages = this.state.messages;
+        if(messages.length){
+            messages.pop();
+            this.updateData(messages);
+            if(!messages.length){
                 this.setState({
                     "show": false
                 });

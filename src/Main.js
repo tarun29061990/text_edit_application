@@ -1,5 +1,12 @@
 import React, { PureComponent } from 'react';
-import {Content, Container} from 'native-base';
+import {
+    StyleSheet
+} from 'react-native';
+import {
+    Content, 
+    Container,
+    Text
+} from 'native-base';
 
 import Config from './../config/Config.json';
 import Storage from './store/Storage';
@@ -14,20 +21,20 @@ class Main extends PureComponent{
         super(props);
         this.state = {
             "wordCount": 0,
-            "savedData": [],
+            "savedMessages": [],
             "currentText":''
         };
     }
     async componentDidMount(){
-        const savedData = await Storage.getValue(Config.state.name);
-        console.log(savedData);
-        if(savedData && savedData.length){
+        const savedMessages = await Storage.getValue(Config.state.name);
+        
+        if(savedMessages && savedMessages.length){
             this.setState(
                 {
-                    "savedData":await Storage.getValue(Config.state.name)
+                    "savedMessages": savedMessages
                 },
                 ()=>{
-                    const currentText = this.state.savedData.slice(-1)[0];
+                    const currentText = this.state.savedMessages.slice(-1)[0];
                     this.setState({
                         'currentText': currentText
                     })
@@ -60,65 +67,97 @@ class Main extends PureComponent{
         })
     }
 
-    _saveState = async (newData) => {
+    _saveState = async (newMessages) => {
 
         //save state to Async storage
-        const stateName = Config.state.name;
-
-        if(newData){
-            let currentText = ''
-            if(newData.length){
-                currentText = newData.slice(-1)[0]
+        if(newMessages){
+            let currentText = '';
+            if(newMessages.length){
+                currentText = newMessages.slice(-1)[0];
             }
+            
             this.setState({
-                "savedData": newData,
+                "savedMessages": newMessages,
                 "currentText": currentText
-            })
+            });
+
             this._updateWordCount(currentText);
-            Storage.setValue(stateName, newData);
+            
+            Storage.setValue(Config.state.name, newMessages);
         }
     }
 
     _processSave = (text) =>{
         
-        let newData = this.state.savedData;
-        newData.push(text)
+        let newMessages = this.state.savedMessages;
+        newMessages.push(text)
         this._updateWordCount(text);
 
         this.setState({
-            "savedData": newData
-        })
-        Storage.setValue(Config.state.name, newData);
+            "savedMessages": newMessages,
+            "currentText": text
+        });
+
+        Storage.setValue(Config.state.name, newMessages);
     }
 
     render(){
         return (
             <Container>
-                <MainHeader></MainHeader>            
-                <Content padder>
+                <MainHeader></MainHeader>   
+                
+                <Content padder contentContainerStyle = {styles.container}>
                     
-                    <TextInput 
+                    <TextInput style={styles.textInput}
                         value = {this.state.currentText}
                         saveState={this._processSave}
-                        key = {this.state.currentText.length}
+                        key = {this.state.currentText.length+"-"+"text"}
                     ></TextInput>
-                    
-                    <Count 
-                        value = {this.state.currentText} 
-                        count={this.state.wordCount} >
-                    </Count>
+                    <Content contentContainerStyle={styles.actionContainer}>
+                        <Count style={styles.wordCount}
+                            value = {this.state.currentText} 
+                            count={this.state.wordCount} >
+                        </Count>
 
-                    <Undo
-                        value = {this.state.savedData} 
-                        updateData={this._saveState}
-                        key = {this.state.savedData.length}
-                    >
-                    </Undo>
-
+                        <Undo style={styles.undo}
+                            value = {this.state.savedMessages} 
+                            updateData={this._saveState}
+                            key = {this.state.savedMessages.length+"-"+"undo"}
+                        >
+                        </Undo>
+                    </Content>
+                    <Text style={styles.introText}>Created By Tarun Chaudhary</Text>
                 </Content>
             </Container>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    
+    container:{
+        flex:6
+    },
+    textInput:{
+        flex:4
+    },
+    actionContainer: {
+        flex:2
+    },
+
+    wordCount:{
+        flex:0.5
+    },
+
+    undo:{
+        flex:0.5
+    },
+
+    introText:{
+        justifyContent:"center", 
+        alignSelf:"center"
+    }
+    
+});
 
 export default Main;

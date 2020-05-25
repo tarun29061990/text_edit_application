@@ -9,10 +9,6 @@
 import React, { Component } from 'react';
 
 import {
-  StatusBar, Text
-} from 'react-native';
-
-import {
   Container
 } from 'native-base';
 
