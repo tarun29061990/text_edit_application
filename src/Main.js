@@ -5,7 +5,8 @@ import {
 import {
     Content, 
     Container,
-    Text
+    Text,
+    Spinner
 } from 'native-base';
 
 import Config from './../config/Config.json';
@@ -22,12 +23,13 @@ class Main extends PureComponent{
         this.state = {
             "wordCount": 0,
             "savedMessages": [],
-            "currentText":''
+            "currentText":'',
+            "showLoader": true
         };
     }
     async componentDidMount(){
         const savedMessages = await Storage.getValue(Config.state.name);
-        
+        this.setState({"showLoader": false});
         if(savedMessages && savedMessages.length){
             this.setState(
                 {
@@ -102,34 +104,43 @@ class Main extends PureComponent{
     }
 
     render(){
-        return (
-            <Container>
-                <MainHeader></MainHeader>   
-                
-                <Content padder contentContainerStyle = {styles.container}>
-                    
-                    <TextInput style={styles.textInput}
-                        value = {this.state.currentText}
-                        saveState={this._processSave}
-                        key = {this.state.currentText.length+"-"+"text"}
-                    ></TextInput>
-                    <Content contentContainerStyle={styles.actionContainer}>
-                        <Count style={styles.wordCount}
-                            value = {this.state.currentText} 
-                            count={this.state.wordCount} >
-                        </Count>
+        if (this.state.showLoader) {
+            
+            return(
+                <Spinner color='blue' />
+            );
 
-                        <Undo style={styles.undo}
-                            value = {this.state.savedMessages} 
-                            updateData={this._saveState}
-                            key = {this.state.savedMessages.length+"-"+"undo"}
-                        >
-                        </Undo>
+        }else{
+            return (
+                <Container>
+                    
+                    <MainHeader></MainHeader>   
+                    
+                    <Content padder contentContainerStyle = {styles.container}>
+                        
+                        <TextInput style={styles.textInput}
+                            value = {this.state.currentText}
+                            saveState={this._processSave}
+                            key = {this.state.currentText.length+"-"+"text"}
+                        ></TextInput>
+                        <Content contentContainerStyle={styles.actionContainer}>
+                            <Count style={styles.wordCount}
+                                value = {this.state.currentText} 
+                                count={this.state.wordCount} >
+                            </Count>
+
+                            <Undo style={styles.undo}
+                                value = {this.state.savedMessages} 
+                                updateData={this._saveState}
+                                key = {this.state.savedMessages.length+"-"+"undo"}
+                            >
+                            </Undo>
+                        </Content>
+                        <Text style={styles.introText}>Created By Tarun Chaudhary</Text>
                     </Content>
-                    <Text style={styles.introText}>Created By Tarun Chaudhary</Text>
-                </Content>
-            </Container>
-        );
+                </Container>
+            );
+        }
     }
 }
 

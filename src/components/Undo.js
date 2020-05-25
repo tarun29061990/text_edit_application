@@ -36,15 +36,6 @@ class Undo extends PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps){
-        if(!this._arraysMatch(prevProps.value, this.props.value)){
-            this.setState({
-                messages: this.props.value,
-                show: true
-            });
-        }
-    }
-
     _undo = () => {
         
         let messages = this.state.messages;

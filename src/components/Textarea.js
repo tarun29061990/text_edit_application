@@ -20,15 +20,6 @@ class TextInput extends PureComponent {
             "prevText": this.props.value
         })
     }
-
-    componentDidUpdate(prevProps){
-        if(prevProps.value != this.props.value){
-            this.setState({
-                "text": this.props.value,
-                "prevText": this.props.value
-            });
-        }
-    }
     
     _handleChange = (value) => {
         
